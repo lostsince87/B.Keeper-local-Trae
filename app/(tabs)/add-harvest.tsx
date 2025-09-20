@@ -153,6 +153,7 @@ export default function AddHarvestScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

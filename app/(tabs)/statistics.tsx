@@ -1,8 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ChartBar as BarChart3, TrendingUp, TrendingDown, Droplets, Bug, Calendar, Filter } from 'lucide-react-native';
-import { Plus } from 'lucide-react-native';
+import { TrendingUp, TrendingDown, Droplets, Bug, Calendar, Filter , Plus } from 'lucide-react-native';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Inspection, Hive } from '../../types';
@@ -44,8 +43,6 @@ export default function StatisticsScreen() {
     const currentYear = new Date().getFullYear();
     
     for (let i = 0; i < 12; i++) {
-      const monthKey = `${currentYear}-${String(i + 1).padStart(2, '0')}`;
-      
       // For now, use simulated data - in real app this would come from harvest records
       const simulatedAmounts = [0, 0, 5, 12, 28, 45, 35, 15, 5, 0, 0, 0];
       const amount = simulatedAmounts[i] || 0;
@@ -348,6 +345,7 @@ export default function StatisticsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

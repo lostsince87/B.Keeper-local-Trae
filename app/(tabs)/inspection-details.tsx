@@ -1,17 +1,15 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ArrowLeft, Calendar, Thermometer, Cloud, Crown, Scissors, Bug, Activity, Layers, FileText, CreditCard as Edit, Snowflake, Shield } from 'lucide-react-native';
-import { Eye, Heart, Zap, Droplets, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle } from 'lucide-react-native';
+import { ArrowLeft, Calendar, Cloud, Crown, Scissors, Bug, Activity, Layers, FileText, CreditCard as Edit, Snowflake, Shield } from 'lucide-react-native';
 import { useState, useEffect } from 'react';
-import { router, useLocalSearchParams, useRouter } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Inspection } from '../../types';
 
 export default function InspectionDetailsScreen() {
   const { inspectionId, fromHiveId } = useLocalSearchParams();
   const [inspection, setInspection] = useState<Inspection | null>(null);
-  const routerInstance = useRouter();
 
   useEffect(() => {
     // Load inspection data
@@ -31,7 +29,7 @@ export default function InspectionDetailsScreen() {
   if (!inspection) {
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#FFF8E1', '#F5F5DC']} style={styles.gradient}>
+        <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
           <Text>Inspektion hittades inte</Text>
         </LinearGradient>
       </SafeAreaView>
@@ -130,7 +128,7 @@ export default function InspectionDetailsScreen() {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#FFF8E1', '#F5F5DC']} style={styles.gradient}>
+      <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={handleBack}>
             <ArrowLeft size={24} color="#8B4513" />
@@ -376,6 +374,7 @@ export default function InspectionDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

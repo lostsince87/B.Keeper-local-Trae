@@ -1,6 +1,6 @@
 import { Tabs } from 'expo-router';
-import { useColorScheme, Text } from 'react-native';
-import { Home, Archive, FileText, BarChart2, Settings, Plus } from 'lucide-react-native';
+import { useColorScheme } from 'react-native';
+import { Home, FileText, BarChart2, Settings } from 'lucide-react-native';
 import { BeehiveIcon } from '@/components/BeehiveIcon';
 
 export default function TabLayout() {
@@ -13,7 +13,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: '#8FBC8F',
         tabBarInactiveTintColor: '#666',
         tabBarStyle: {
-          backgroundColor: colorScheme === 'dark' ? '#1A1A1A' : '#FFFFFF',
+          backgroundColor: colorScheme === 'dark' ? '#1A1A1A' : '#FFF8E1',
           borderTopColor: colorScheme === 'dark' ? '#333' : '#E5E5E5',
         },
         tabBarLabelStyle: {

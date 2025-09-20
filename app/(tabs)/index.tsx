@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Animated } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, Animated , Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Image } from 'react-native';
-import { Briefcase, FileText, Droplets, TrendingUp, CircleAlert as AlertCircle, Calendar, Activity, Plus, X, Trash2 } from 'lucide-react-native';
+import { FileText, Droplets, TrendingUp, CircleAlert as AlertCircle, Calendar, Activity, Plus, X, Trash2 } from 'lucide-react-native';
 import { router, useFocusEffect } from 'expo-router';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useCallback } from 'react';
 import { BeehiveIcon } from '@/components/BeehiveIcon';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Swipeable } from 'react-native-gesture-handler';
@@ -13,7 +12,7 @@ import { Task, Hive } from '../../types';
 type DisplayTask = Task & { color?: string; task?: string; date?: string; priority?: string };
 
 export default function HomeScreen() {
-  const [selectedStats, setSelectedStats] = useState(['hives', 'inspections', 'honey', 'nucleus']);
+  const [selectedStats] = useState(['hives', 'inspections', 'honey', 'nucleus']);
   const [tasks, setTasks] = useState<DisplayTask[]>([]);
   const [hives, setHives] = useState<Hive[]>([]);
   const [showActionMenu, setShowActionMenu] = useState(false);
@@ -357,6 +356,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

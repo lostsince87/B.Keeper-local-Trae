@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, ScrollView, Pressable, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { User, Bell, Shield, Database, CircleHelp as HelpCircle, Info, ChevronRight, Moon, Globe, HeartHandshake } from 'lucide-react-native';
+import { User, Bell, Shield, Database, CircleHelp as HelpCircle, Info, ChevronRight, Moon, Globe, HeartHandshake, Share2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
 
@@ -34,6 +34,13 @@ export default function SettingsScreen() {
           subtitle: 'Anslut till en bigård med inbjudningskod',
           action: 'navigation',
           onPress: () => router.push('/invitation-code'),
+        },
+        {
+          icon: Share2,
+          title: 'Dela bigård',
+          subtitle: 'Skapa inbjudningskoder för din bigård',
+          action: 'navigation',
+          onPress: () => router.push('/manage-invitations'),
         },
         {
           icon: Moon,
@@ -178,6 +185,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

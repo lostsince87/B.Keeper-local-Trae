@@ -11,7 +11,6 @@ import * as Clipboard from 'expo-clipboard';
 import { 
   Plus, 
   MapPin, 
-  Thermometer, 
   Droplets, 
   Activity, 
   TriangleAlert as AlertTriangle, 
@@ -136,7 +135,7 @@ const handleShareHive = async (hive: Hive): Promise<void> => {
       `Delningskod: ${shareCode}\n\nKoden har kopierats till urklipp. Dela den med andra för att ge dem tillgång till "${hive.name}".`,
       [{ text: 'OK' }]
     );
-  } catch (error) {
+  } catch {
     Alert.alert('Fel', 'Kunde inte skapa delningskod');
   }
 };
@@ -554,7 +553,7 @@ export default function HivesScreen() {
   // ==================== RENDER ====================
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#FFF8E1', '#F5F5DC']} style={styles.gradient}>
+      <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
         {/* Header */}
         <View style={styles.header}>
           <View style={styles.headerLeft}>
@@ -599,6 +598,7 @@ const styles = StyleSheet.create({
   // Container styles
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

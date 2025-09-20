@@ -72,7 +72,7 @@ export default function AddHiveScreen() {
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
       }
-    } catch (error) {
+    } catch {
       Alert.alert('Fel', 'Kunde inte välja bild');
     }
   };
@@ -471,6 +471,7 @@ export default function AddHiveScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

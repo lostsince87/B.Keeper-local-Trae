@@ -1,12 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Modal, Dimensions, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Calendar, Clock, Save, CircleAlert as AlertTriangle, ChevronDown, X } from 'lucide-react-native';
 import { useState, useRef } from 'react';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const { height: screenHeight } = Dimensions.get('window');
 
 export default function AddTaskScreen() {
   const [taskTitle, setTaskTitle] = useState('');
@@ -132,7 +130,7 @@ export default function AddTaskScreen() {
     onClose, 
     title 
   }: {
-    options: Array<{value: string, label: string}>,
+    options: {value: string, label: string}[],
     selectedValue: string,
     onValueChange: (value: string) => void,
     onClose: () => void,
@@ -384,6 +382,7 @@ export default function AddTaskScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

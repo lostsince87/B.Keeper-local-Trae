@@ -37,7 +37,7 @@ export default function HiveDetailsScreen() {
   if (!hive) {
     return (
       <SafeAreaView style={styles.container}>
-        <LinearGradient colors={['#FFF8E1', '#F5F5DC']} style={styles.gradient}>
+        <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
           <Text>Kupa hittades inte</Text>
         </LinearGradient>
       </SafeAreaView>
@@ -81,53 +81,9 @@ export default function HiveDetailsScreen() {
     }
   };
 
-  const getStatusText = (status: string) => {
-    switch (status) {
-      case 'excellent': return 'Utmärkt';
-      case 'good': return 'Bra';
-      case 'warning': return 'Varning';
-      case 'critical': return 'Kritisk';
-      default: return 'Ny kupa';
-    }
-  };
 
-  // Få detaljerad statustext baserat på kupdata
-  const getDetailedStatusText = (hive: any) => {
-    if (hive.status === 'critical') {
-      if (hive.hasQueen === false) {
-        return '';
-      }
-      const varroaValue = parseFloat(hive.varroa);
-      if (varroaValue > 5) {
-        return `Kritisk varroa (${hive.varroa}) - Behandling krävs omedelbart`;
-      }
-      return 'Kritisk situation - Kräver omedelbar åtgärd';
-    }
-    
-    if (hive.status === 'warning') {
-      const issues = [];
-      const varroaValue = parseFloat(hive.varroa);
-      
-      if (varroaValue > 2 && varroaValue <= 5) {
-        issues.push(`Förhöjd varroa (${hive.varroa}) - Övervaka noga`);
-      }
-      if (hive.population === 'Svag') {
-        issues.push('Svag population - Kontrollera näring och sjukdomar');
-      }
-      if (hive.frames) {
-        const [brood, total] = hive.frames.split('/').map(Number);
-        if (brood < total * 0.3) {
-          issues.push('Lite yngel - Kontrollera drottningens äggläggning');
-        }
-      }
-      
-      return issues.length > 0 ? issues.join('\n• ') : 'Varning - Kräver uppmärksamhet';
-    }
-    
-    if (hive.status === 'excellent') return 'Utmärkt tillstånd';
-    if (hive.status === 'good') return 'Bra tillstånd';
-    return 'Ny kupa - Väntar på första inspektion för att bedöma tillstånd';
-  };
+
+
 
   const handleInspectionPress = (inspection: any) => {
     router.push({
@@ -145,7 +101,7 @@ export default function HiveDetailsScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <LinearGradient colors={['#FFF8E1', '#F5F5DC']} style={styles.gradient}>
+      <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={handleBack}>
             <ArrowLeft size={24} color="#8B4513" />
@@ -324,6 +280,7 @@ export default function HiveDetailsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

@@ -1,9 +1,10 @@
 import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ArrowLeft, Key, Users, Check } from 'lucide-react-native';
+import { ArrowLeft, Key, Check } from 'lucide-react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { useInvitationCode } from '../lib/invitation-service';
 
 export default function InvitationCodeScreen() {
   const [invitationCode, setInvitationCode] = useState('');
@@ -17,15 +18,28 @@ export default function InvitationCodeScreen() {
 
     setIsLoading(true);
     
-    // Simulera API-anrop
-    setTimeout(() => {
+    try {
+      // eslint-disable-next-line react-hooks/rules-of-hooks
+      const { data, error } = await useInvitationCode(invitationCode.trim());
+      
+      if (error) {
+        Alert.alert('Fel', error);
+        setIsLoading(false);
+        return;
+      }
+
+      if (data?.success) {
+        Alert.alert(
+          'Framgång!', 
+          `Du har gått med i bigården "${data.apiary.name}"!`,
+          [{ text: 'OK', onPress: () => router.back() }]
+        );
+      }
+    } catch {
+      Alert.alert('Fel', 'Ett oväntat fel inträffade. Försök igen.');
+    } finally {
       setIsLoading(false);
-      Alert.alert(
-        'Framgång!', 
-        'Inbjudningskoden har accepterats. Du är nu ansluten till gruppen.',
-        [{ text: 'OK', onPress: () => router.back() }]
-      );
-    }, 1500);
+    }
   };
 
   const handlePasteCode = async () => {
@@ -51,16 +65,18 @@ export default function InvitationCodeScreen() {
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+          {/* Info Card */}
           <View style={styles.infoCard}>
             <View style={styles.iconContainer}>
               <Key size={32} color="#F7B801" />
             </View>
             <Text style={styles.infoTitle}>Anslut till en bigård</Text>
             <Text style={styles.infoDescription}>
-              Ange inbjudningskoden du fått från bigårdens ägare för att ansluta till en bigård och dela data med andra biodlare.
+              Ange inbjudningskoden du fått från bigårdens ägare för att få tillgång till kupor, inspektioner och skördar.
             </Text>
           </View>
 
+          {/* Input Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Inbjudningskod</Text>
             <View style={styles.inputCard}>
@@ -69,55 +85,58 @@ export default function InvitationCodeScreen() {
                   style={styles.textInput}
                   value={invitationCode}
                   onChangeText={setInvitationCode}
-                  placeholder="Klistra in din inbjudningskod här"
+                  placeholder="Ange 8-siffrig kod (t.ex. ABC123XY)"
                   placeholderTextColor="#8B7355"
                   autoCapitalize="characters"
-                  autoCorrect={false}
-                  multiline={false}
+                  maxLength={8}
                 />
               </View>
-              
-              <Pressable 
-                style={styles.pasteButton}
-                onPress={handlePasteCode}
-              >
-                <Text style={styles.pasteButtonText}>Aktivera kod</Text>
+              <Pressable style={styles.pasteButton} onPress={handlePasteCode}>
+                <Text style={styles.pasteButtonText}>Klistra in från urklipp</Text>
               </Pressable>
             </View>
           </View>
 
+          {/* Benefits Section */}
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Fördelar med bigårdsanslutning</Text>
+            <Text style={styles.sectionTitle}>Vad får du tillgång till?</Text>
             <View style={styles.benefitsCard}>
               <View style={styles.benefitItem}>
-                <Users size={20} color="#8B4513" />
-                <Text style={styles.benefitText}>Dela data med andra biodlare i bigården</Text>
+                <Check size={20} color="#4CAF50" />
+                <Text style={styles.benefitText}>Se alla kupor i bigården</Text>
               </View>
               <View style={styles.benefitItem}>
-                <Check size={20} color="#8B4513" />
-                <Text style={styles.benefitText}>Få tips och råd från erfarna biodlare</Text>
+                <Check size={20} color="#4CAF50" />
+                <Text style={styles.benefitText}>Lägg till inspektioner och observationer</Text>
               </View>
               <View style={styles.benefitItem}>
-                <Check size={20} color="#8B4513" />
-                <Text style={styles.benefitText}>Jämför statistik och resultat</Text>
+                <Check size={20} color="#4CAF50" />
+                <Text style={styles.benefitText}>Registrera skördar och uppgifter</Text>
               </View>
               <View style={styles.benefitItem}>
-                <Check size={20} color="#8B4513" />
-                <Text style={styles.benefitText}>Koordinera aktiviteter och inspektioner</Text>
+                <Check size={20} color="#4CAF50" />
+                <Text style={styles.benefitText}>Samarbeta med andra biodlare</Text>
               </View>
             </View>
           </View>
-
-          <Pressable 
-            style={[styles.submitButton, (!invitationCode.trim() || isLoading) && styles.submitButtonDisabled]}
-            onPress={handleSubmitCode}
-            disabled={!invitationCode.trim() || isLoading}
-          >
-            <Text style={[styles.submitButtonText, (!invitationCode.trim() || isLoading) && styles.submitButtonTextDisabled]}>
-              {isLoading ? 'Ansluter...' : 'Anslut till bigård'}
-            </Text>
-          </Pressable>
         </ScrollView>
+
+        {/* Submit Button */}
+        <Pressable 
+          style={[
+            styles.submitButton, 
+            (isLoading || !invitationCode.trim()) && styles.submitButtonDisabled
+          ]}
+          onPress={handleSubmitCode}
+          disabled={isLoading || !invitationCode.trim()}
+        >
+          <Text style={[
+            styles.submitButtonText,
+            (isLoading || !invitationCode.trim()) && styles.submitButtonTextDisabled
+          ]}>
+            {isLoading ? 'Ansluter...' : 'Gå med i bigård'}
+          </Text>
+        </Pressable>
       </LinearGradient>
     </SafeAreaView>
   );

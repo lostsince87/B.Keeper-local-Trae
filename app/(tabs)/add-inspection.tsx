@@ -1,13 +1,12 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { ArrowLeft, Calendar, Thermometer, FileText, Save, Crown, Bug, Activity, Layers, Cloud, Snowflake, Shield, Scissors } from 'lucide-react-native';
-import { Eye, Heart, Zap, Droplets, TriangleAlert as AlertTriangle, CircleCheck as CheckCircle, Circle as XCircle, Plus } from 'lucide-react-native';
+import { ArrowLeft, Calendar, Thermometer, Save, Crown, Bug, Activity, Layers, Cloud, Snowflake, Shield, Scissors } from 'lucide-react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
-import { Inspection, Hive } from '../../types';
+import { Inspection } from '../../types';
 
 // OpenAI integration for inspection analysis
 // Använd miljövariabel för säker hantering av API-nyckel
@@ -135,8 +134,8 @@ export default function AddInspectionScreen() {
   const [newQueenMarked, setNewQueenMarked] = useState<boolean | null>(null);
   const [newQueenColor, setNewQueenColor] = useState('');
   const [newQueenWingClipped, setNewQueenWingClipped] = useState<boolean | null>(null);
-  const [selectedObservations, setSelectedObservations] = useState<string[]>([]);
-  const [customObservation, setCustomObservation] = useState('');
+  const [selectedObservations] = useState<string[]>([]);
+  const [customObservation] = useState('');
 
   const [availableHives, setAvailableHives] = useState<string[]>([]);
 
@@ -253,9 +252,9 @@ export default function AddInspectionScreen() {
   }, []);
 
   // Calculate varroa per day when count or days change
-  const calculateVarroaPerDay = (count: string, days: string) => {
-    const countNum = parseFloat(count);
-    const daysNum = parseFloat(days);
+  useEffect(() => {
+    const countNum = parseFloat(varroaCount);
+    const daysNum = parseFloat(varroaDays);
     
     if (countNum >= 0 && daysNum > 0) {
       const perDay = countNum / daysNum;
@@ -272,16 +271,14 @@ export default function AddInspectionScreen() {
       setVarroaPerDay(null);
       setVarroaLevel(null);
     }
-  };
+  }, [varroaCount, varroaDays]);
 
   const handleVarroaCountChange = (value: string) => {
     setVarroaCount(value);
-    calculateVarroaPerDay(value, varroaDays);
   };
 
   const handleVarroaDaysChange = (value: string) => {
     setVarroaDays(value);
-    calculateVarroaPerDay(varroaCount, value);
   };
 
   const getVarroaLevelColor = (level: string | null) => {
@@ -448,54 +445,20 @@ export default function AddInspectionScreen() {
     saveInspection();
   };
 
-  // Calculate inspection rating based on observations and data
-  const calculateInspectionRating = () => {
-    let score = 3; // Start with neutral
-    
-    // Positive factors
-    if (queenSeen === true) score += 1;
-    if (varroaPerDay && varroaPerDay <= 2) score += 1;
-    if (temperament === 'Lugn') score += 0.5;
-    if (selectedObservations.includes('brood-pattern')) score += 0.5;
-    if (selectedObservations.includes('pop-strong')) score += 0.5;
-    
-    // Negative factors
-    if (queenSeen === false) score -= 1;
-    if (varroaPerDay && varroaPerDay > 5) score -= 1;
-    if (temperament === 'Aggressiv') score -= 0.5;
-    if (selectedObservations.includes('brood-disease')) score -= 2;
-    if (selectedObservations.includes('pop-weak')) score -= 1;
-    
-    return Math.max(1, Math.min(5, Math.round(score)));
-  };
 
-  // Calculate hive status based on inspection data
-  const calculateHiveStatus = (inspection: Inspection): string => {
-    if ((inspection.varroaPerDay && inspection.varroaPerDay > 5) || inspection.queenSeen === false) {
-      return 'critical';
-    }
-    if ((inspection.varroaPerDay && inspection.varroaPerDay > 2) || inspection.temperament === 'Aggressiv') {
-      return 'warning';
-    }
-    if (inspection.queenSeen === true && (!inspection.varroaPerDay || inspection.varroaPerDay <= 2)) {
-      return 'excellent';
-    }
-    return 'good';
-  };
 
-  // Calculate population based on brood frames
-  const calculatePopulation = (broodFrames: number) => {
-    if (broodFrames >= 8) return 'Stark';
-    if (broodFrames >= 5) return 'Medel';
-    return 'Svag';
-  };
+
+
+
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LinearGradient
-        colors={['#FFF8E1', '#F5F5DC']}
-        style={styles.gradient}
-      >
+    <View style={styles.fullScreenContainer}>
+      <StatusBar backgroundColor="#FFF8E1" barStyle="dark-content" />
+      <SafeAreaView style={styles.container}>
+        <LinearGradient
+          colors={['#FFF8E1', '#F5F5DC']}
+          style={styles.gradient}
+        >
         <View style={styles.header}>
           <Pressable style={styles.backButton} onPress={() => router.back()}>
             <ArrowLeft size={24} color="#8B4513" />
@@ -943,13 +906,20 @@ export default function AddInspectionScreen() {
           </View>
         </ScrollView>
       </LinearGradient>
-    </SafeAreaView>
+      </SafeAreaView>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
+  fullScreenContainer: {
+    flex: 1,
+    backgroundColor: '#FFF8E1',
+    paddingTop: 0,
+  },
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,

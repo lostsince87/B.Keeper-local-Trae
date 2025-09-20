@@ -1,15 +1,14 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Plus, Search, Calendar, Cloud, FileText, Star, MapPin, ChevronDown, ChevronRight } from 'lucide-react-native';
-import { useState } from 'react';
+import { Plus, Calendar, Cloud, FileText, Star, MapPin, ChevronDown } from 'lucide-react-native';
+import { useState , useEffect } from 'react';
 import { router } from 'expo-router';
-import { useEffect } from 'react';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Inspection, Hive } from '../../types';
 
 export default function InspectionsScreen() {
-  const [searchText, setSearchText] = useState('');
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [hives, setHives] = useState<Hive[]>([]);
   const [selectedLocation, setSelectedLocation] = useState('');
@@ -131,11 +130,7 @@ export default function InspectionsScreen() {
     });
   };
 
-  const getRatingColor = (rating: number) => {
-    if (rating >= 4) return '#8FBC8F';
-    if (rating >= 3) return '#F7B801';
-    return '#FF8C42';
-  };
+
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }).map((_, index) => (
@@ -318,6 +313,7 @@ export default function InspectionsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#FFF8E1',
   },
   gradient: {
     flex: 1,
