@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Swipeable } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 // Icons
 import { 
@@ -320,25 +321,25 @@ export default function HivesScreen() {
   // ==================== RENDER HELPERS ====================
   const renderRightActionForLocation = (locationName: string) => (
     <View style={styles.deleteAction}>
-      <Pressable 
+      <AnimatedButton 
         style={styles.deleteButton} 
         onPress={() => handleDeleteLocation(locationName)}
       >
         <Trash2 size={20} color="white" />
         <Text style={styles.deleteText}>Ta bort</Text>
-      </Pressable>
+      </AnimatedButton>
     </View>
   );
 
   const renderRightActionForHive = (hive: any) => (
     <View style={styles.deleteAction}>
-      <Pressable 
+      <AnimatedButton 
         style={styles.deleteButton} 
         onPress={() => handleDeleteHive(hive.id, hive.name)}
       >
         <Trash2 size={20} color="white" />
         <Text style={styles.deleteText}>Ta bort</Text>
-      </Pressable>
+      </AnimatedButton>
     </View>
   );
 
@@ -354,7 +355,7 @@ export default function HivesScreen() {
         renderRightActions={() => renderRightActionForLocation(location)}
         rightThreshold={40}
       >
-        <Pressable 
+        <AnimatedButton 
           style={styles.locationCard}
           onPress={() => handleLocationPress(location)}
         >
@@ -422,7 +423,7 @@ export default function HivesScreen() {
               </View>
             )}
           </View>
-        </Pressable>
+        </AnimatedButton>
       </Swipeable>
     );
   };
@@ -433,7 +434,7 @@ export default function HivesScreen() {
       renderRightActions={() => renderRightActionForHive(hive)}
       rightThreshold={40}
     >
-      <Pressable 
+      <AnimatedButton 
         style={styles.hiveCard}
         onPress={() => router.push({
           pathname: '/hive-details',
@@ -467,7 +468,7 @@ export default function HivesScreen() {
             </View>
           </View>
           <View style={styles.headerActions}>
-            <Pressable 
+            <AnimatedButton 
               style={styles.shareButton}
               onPress={(e) => {
                 e.stopPropagation();
@@ -475,7 +476,7 @@ export default function HivesScreen() {
               }}
             >
               <Share2 size={18} color="#8FBC8F" />
-            </Pressable>
+            </AnimatedButton>
             <View style={[
               styles.statusBadge, 
               { backgroundColor: getStatusColor(hive.status) + '20' }
@@ -540,7 +541,7 @@ export default function HivesScreen() {
             )}
           </View>
         </View>
-      </Pressable>
+      </AnimatedButton>
     </Swipeable>
   );
 
@@ -558,23 +559,23 @@ export default function HivesScreen() {
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             {selectedLocation && (
-              <Pressable 
+              <AnimatedButton 
                 style={styles.backToLocationsButton} 
                 onPress={handleBackToLocations}
               >
                 <Text style={styles.backToLocationsText}>← Platser</Text>
-              </Pressable>
+              </AnimatedButton>
             )}
             <Text style={styles.title}>
               {selectedLocation ? selectedLocation : 'Mina kupor'}
             </Text>
           </View>
-          <Pressable 
+          <AnimatedButton 
             style={styles.addButton} 
             onPress={() => router.push('/add-hive')}
           >
             <Plus size={24} color="white" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         {/* Content */}

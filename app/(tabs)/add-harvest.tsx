@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Droplets, Calendar, Save, Layers } from 'lucide-react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function AddHarvestScreen() {
   const [selectedHive, setSelectedHive] = useState('');
@@ -50,9 +51,9 @@ export default function AddHarvestScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Registrera skattning</Text>
           <View style={styles.placeholder} />
         </View>
@@ -63,21 +64,21 @@ export default function AddHarvestScreen() {
               <Text style={styles.label}>Välj kupa *</Text>
               <View style={styles.hiveSelector}>
                 {hives.map((hive) => (
-                  <Pressable
+                  <AnimatedButton
                     key={hive}
                     style={[
                       styles.hiveOption,
-                      selectedHive === hive && styles.hiveOptionSelected
+                      selectedHive === hive ? styles.hiveOptionSelected : {}
                     ]}
                     onPress={() => setSelectedHive(hive)}
                   >
                     <Text style={[
                       styles.hiveOptionText,
-                      selectedHive === hive && styles.hiveOptionTextSelected
+                      selectedHive === hive ? styles.hiveOptionTextSelected : {}
                     ]}>
                       {hive}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
               </View>
             </View>
@@ -139,10 +140,10 @@ export default function AddHarvestScreen() {
               />
             </View>
 
-            <Pressable style={styles.saveButton} onPress={handleSave}>
+            <AnimatedButton style={styles.saveButton} onPress={handleSave}>
               <Save size={24} color="white" />
               <Text style={styles.saveButtonText}>Spara skattning</Text>
-            </Pressable>
+            </AnimatedButton>
           </View>
         </ScrollView>
       </LinearGradient>

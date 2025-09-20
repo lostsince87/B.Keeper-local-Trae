@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TrendingUp, TrendingDown, Droplets, Bug, Calendar, Filter , Plus } from 'lucide-react-native';
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AnimatedButton } from '@/components/AnimatedButton';
 import { Inspection, Hive } from '../../types';
 
 export default function StatisticsScreen() {
@@ -125,9 +126,9 @@ export default function StatisticsScreen() {
       >
         <View style={styles.header}>
           <Text style={styles.title}>Statistik</Text>
-          <Pressable style={styles.filterButton}>
+          <AnimatedButton style={styles.filterButton}>
             <Filter size={20} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>

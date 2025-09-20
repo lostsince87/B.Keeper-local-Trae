@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Animated , Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Animated , Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { FileText, Droplets, TrendingUp, CircleAlert as AlertCircle, Calendar, Activity, Plus, X, Trash2 } from 'lucide-react-native';
 import { router, useFocusEffect } from 'expo-router';
 import { useState, useCallback } from 'react';
 import { BeehiveIcon } from '@/components/BeehiveIcon';
+import { AnimatedButton } from '@/components/AnimatedButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Swipeable } from 'react-native-gesture-handler';
 import { Task, Hive } from '../../types';
@@ -239,7 +240,7 @@ export default function HomeScreen() {
     console.log('renderRightAction called with taskIndex:', taskIndex);
     return (
       <Animated.View style={styles.deleteAction}>
-        <Pressable
+        <AnimatedButton
           style={styles.deleteButton}
           onPress={() => {
             console.log('Delete button pressed for taskIndex:', taskIndex);
@@ -248,7 +249,7 @@ export default function HomeScreen() {
         >
           <Trash2 size={24} color="white" />
           <Text style={styles.deleteText}>Radera</Text>
-        </Pressable>
+        </AnimatedButton>
       </Animated.View>
     );
   };
@@ -275,13 +276,13 @@ export default function HomeScreen() {
 
             <View style={styles.statsGrid}>
               {availableStats.map((stat, index) => (
-                <Pressable key={index} style={styles.statCard}>
+                <AnimatedButton key={index} style={styles.statCard}>
                   <View style={[styles.statIcon, { backgroundColor: stat.color + '20' }]}>
                     <stat.icon size={24} color={stat.color} />
                   </View>
                   <Text style={styles.statValue}>{stat.value}</Text>
                   <Text style={styles.statTitle}>{stat.title}</Text>
-                </Pressable>
+                </AnimatedButton>
               ))}
             </View>
           </View>
@@ -295,7 +296,7 @@ export default function HomeScreen() {
                   renderRightActions={() => renderRightAction(index)}
                   rightThreshold={40}
                 >
-                  <Pressable style={styles.taskCard}>
+                  <AnimatedButton style={styles.taskCard}>
                     <View style={[styles.taskPriority, { backgroundColor: task.color || '#8FBC8F' }]} />
                     <View style={styles.taskContent}>
                       <Text style={styles.taskTitle}>{task.task || task.title}</Text>
@@ -308,7 +309,7 @@ export default function HomeScreen() {
                       </View>
                     </View>
                     <AlertCircle size={20} color={task.color || '#8FBC8F'} />
-                  </Pressable>
+                  </AnimatedButton>
                 </Swipeable>
               ))
             ) : (
@@ -320,7 +321,7 @@ export default function HomeScreen() {
 
           <View style={styles.section}>
             <View style={styles.actionMenuContainer}>
-              <Pressable 
+              <AnimatedButton 
                 style={styles.plusButton}
                 onPress={() => setShowActionMenu(!showActionMenu)}
               >
@@ -329,19 +330,19 @@ export default function HomeScreen() {
                 ) : (
                   <Plus size={32} color="white" />
                 )}
-              </Pressable>
+              </AnimatedButton>
               
               {showActionMenu && (
                 <View style={styles.actionMenu}>
                   {quickActions.map((action) => (
-                    <Pressable
+                    <AnimatedButton
                       key={action.id}
                       style={[styles.actionMenuItem, { backgroundColor: action.color }]}
                       onPress={() => handleActionPress(action.route)}
                     >
                       <action.icon size={24} color="white" />
                       <Text style={styles.actionMenuText}>{action.title}</Text>
-                    </Pressable>
+                    </AnimatedButton>
                   ))}
                 </View>
               )}
@@ -389,19 +390,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 16,
   },
   statCard: {
     backgroundColor: 'white',
-    borderRadius: 10,
-    padding: 12,
+    borderRadius: 16,
+    padding: 16,
     width: '48%',
-    marginBottom: 8,
+    height: 120,
+    marginBottom: 12,
     alignItems: 'center',
+    justifyContent: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
+    shadowRadius: 8,
     elevation: 3,
   },
   statIcon: {

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Calendar, Cloud, Crown, Scissors, Bug, Activity, Layers, FileText, CreditCard as Edit, Snowflake, Shield } from 'lucide-react-native';
@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Inspection } from '../../types';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function InspectionDetailsScreen() {
   const { inspectionId, fromHiveId } = useLocalSearchParams();
@@ -130,13 +131,13 @@ export default function InspectionDetailsScreen() {
     <SafeAreaView style={styles.container}>
       <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={handleBack}>
+          <AnimatedButton style={styles.backButton} onPress={handleBack}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Inspektionsdetaljer</Text>
-          <Pressable style={styles.editButton} onPress={handleEdit}>
+          <AnimatedButton style={styles.editButton} onPress={handleEdit}>
             <Edit size={20} color="white" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>

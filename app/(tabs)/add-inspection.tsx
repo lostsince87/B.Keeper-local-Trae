@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Alert, StatusBar } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Calendar, Thermometer, Save, Crown, Bug, Activity, Layers, Cloud, Snowflake, Shield, Scissors } from 'lucide-react-native';
+import { AnimatedButton } from '@/components/AnimatedButton';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -460,9 +461,9 @@ export default function AddInspectionScreen() {
           style={styles.gradient}
         >
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Ny inspektion</Text>
           <View style={styles.placeholder} />
         </View>
@@ -473,21 +474,21 @@ export default function AddInspectionScreen() {
               <Text style={styles.label}>Välj kupa *</Text>
               <View style={styles.hiveSelector}>
                 {availableHives.map((hive) => (
-                  <Pressable
+                  <AnimatedButton
                     key={hive}
                     style={[
                       styles.hiveOption,
-                      selectedHive === hive && styles.hiveOptionSelected
+                      selectedHive === hive ? styles.hiveOptionSelected : {}
                     ]}
                     onPress={() => setSelectedHive(hive)}
                   >
                     <Text style={[
                       styles.hiveOptionText,
-                      selectedHive === hive && styles.hiveOptionTextSelected
+                      selectedHive === hive ? styles.hiveOptionTextSelected : {}
                     ]}>
                       {hive}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
               </View>
             </View>
@@ -575,49 +576,49 @@ export default function AddInspectionScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Drottning sedd</Text>
               <View style={styles.queenSelector}>
-                <Pressable
+                <AnimatedButton
                   style={[
                     styles.queenOption,
-                    queenSeen === true && styles.queenOptionSelected
+                    queenSeen === true ? styles.queenOptionSelected : {}
                   ]}
                   onPress={() => setQueenSeen(true)}
                 >
                   <Crown size={20} color={queenSeen === true ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.queenOptionText,
-                    queenSeen === true && styles.queenOptionTextSelected
+                    queenSeen === true ? styles.queenOptionTextSelected : {}
                   ]}>
                     Ja
                   </Text>
-                </Pressable>
-                <Pressable
+                </AnimatedButton>
+                <AnimatedButton
                   style={[
                     styles.queenOption,
-                    queenSeen === false && styles.queenOptionSelected
+                    queenSeen === false ? styles.queenOptionSelected : {}
                   ]}
                   onPress={() => setQueenSeen(false)}
                 >
                   <Text style={[
                     styles.queenOptionText,
-                    queenSeen === false && styles.queenOptionTextSelected
+                    queenSeen === false ? styles.queenOptionTextSelected : {}
                   ]}>
                     Nej
                   </Text>
-                </Pressable>
-                <Pressable
+                </AnimatedButton>
+                <AnimatedButton
                   style={[
                     styles.queenOption,
-                    queenSeen === null && styles.queenOptionSelected
+                    queenSeen === null ? styles.queenOptionSelected : {}
                   ]}
                   onPress={() => setQueenSeen(null)}
                 >
                   <Text style={[
                     styles.queenOptionText,
-                    queenSeen === null && styles.queenOptionTextSelected
+                    queenSeen === null ? styles.queenOptionTextSelected : {}
                   ]}>
                     Osäker
                   </Text>
-                </Pressable>
+                </AnimatedButton>
               </View>
             </View>
 
@@ -625,7 +626,7 @@ export default function AddInspectionScreen() {
               <Text style={styles.label}>Temperament</Text>
               <View style={styles.temperamentSelector}>
                 {temperamentOptions.map((option) => (
-                  <Pressable
+                  <AnimatedButton
                     key={option}
                     style={[
                       styles.temperamentOption,
@@ -640,7 +641,7 @@ export default function AddInspectionScreen() {
                     ]}>
                       {option}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
               </View>
             </View>
@@ -697,53 +698,53 @@ export default function AddInspectionScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Specialåtgärder</Text>
               <View style={styles.specialActionsContainer}>
-                <Pressable
+                <AnimatedButton
                   style={[
                     styles.specialActionButton,
-                    isWintering && styles.specialActionButtonActive
+                    isWintering ? styles.specialActionButtonActive : {}
                   ]}
                   onPress={() => setIsWintering(!isWintering)}
                 >
                   <Snowflake size={20} color={isWintering ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.specialActionText,
-                    isWintering && styles.specialActionTextActive
+                    isWintering ? styles.specialActionTextActive : {}
                   ]}>
                     Invintring
                   </Text>
-                </Pressable>
+                </AnimatedButton>
 
-                <Pressable
+                <AnimatedButton
                   style={[
                     styles.specialActionButton,
-                    isVarroaTreatment && styles.specialActionButtonActive
+                    isVarroaTreatment ? styles.specialActionButtonActive : {}
                   ]}
                   onPress={() => setIsVarroaTreatment(!isVarroaTreatment)}
                 >
                   <Shield size={20} color={isVarroaTreatment ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.specialActionText,
-                    isVarroaTreatment && styles.specialActionTextActive
+                    isVarroaTreatment ? styles.specialActionTextActive : {}
                   ]}>
                     Varroabehandling
                   </Text>
-                </Pressable>
+                </AnimatedButton>
 
-                <Pressable
+                <AnimatedButton
                   style={[
                     styles.specialActionButton,
-                    newQueenAdded && styles.specialActionButtonActive
+                    newQueenAdded ? styles.specialActionButtonActive : {}
                   ]}
                   onPress={() => setNewQueenAdded(!newQueenAdded)}
                 >
                   <Crown size={20} color={newQueenAdded ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.specialActionText,
-                    newQueenAdded && styles.specialActionTextActive
+                    newQueenAdded ? styles.specialActionTextActive : {}
                   ]}>
                     Ny drottning
                   </Text>
-                </Pressable>
+                </AnimatedButton>
               </View>
             </View>
 
@@ -769,21 +770,21 @@ export default function AddInspectionScreen() {
                 <Text style={styles.label}>Typ av behandling</Text>
                 <View style={styles.treatmentSelector}>
                   {treatmentOptions.map((option) => (
-                    <Pressable
+                    <AnimatedButton
                       key={option}
                       style={[
                         styles.treatmentOption,
-                        treatmentType === option && styles.treatmentOptionSelected
+                        treatmentType === option ? styles.treatmentOptionSelected : {}
                       ]}
                       onPress={() => setTreatmentType(option)}
                     >
                       <Text style={[
                         styles.treatmentOptionText,
-                        treatmentType === option && styles.treatmentOptionTextSelected
+                        treatmentType === option ? styles.treatmentOptionTextSelected : {}
                       ]}>
                         {option}
                       </Text>
-                    </Pressable>
+                    </AnimatedButton>
                   ))}
                 </View>
               </View>
@@ -794,34 +795,34 @@ export default function AddInspectionScreen() {
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Ny drottning märkt</Text>
                   <View style={styles.queenSelector}>
-                    <Pressable
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        newQueenMarked === true && styles.queenOptionSelected
+                        newQueenMarked === true ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setNewQueenMarked(true)}
                     >
                       <Text style={[
                         styles.queenOptionText,
-                        newQueenMarked === true && styles.queenOptionTextSelected
+                        newQueenMarked === true ? styles.queenOptionTextSelected : {}
                       ]}>
                         Ja
                       </Text>
-                    </Pressable>
-                    <Pressable
+                    </AnimatedButton>
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        newQueenMarked === false && styles.queenOptionSelected
+                        newQueenMarked === false ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setNewQueenMarked(false)}
                     >
                       <Text style={[
                         styles.queenOptionText,
-                        newQueenMarked === false && styles.queenOptionTextSelected
+                        newQueenMarked === false ? styles.queenOptionTextSelected : {}
                       ]}>
                         Nej
                       </Text>
-                    </Pressable>
+                    </AnimatedButton>
                   </View>
                 </View>
 
@@ -830,19 +831,19 @@ export default function AddInspectionScreen() {
                     <Text style={styles.label}>Märkningsfärg</Text>
                     <View style={styles.colorSelector}>
                       {queenColors.map((color) => (
-                        <Pressable
+                        <AnimatedButton
                           key={color.id}
                           style={[
                             styles.colorOption,
                             { backgroundColor: color.color },
-                            newQueenColor === color.id && styles.colorOptionSelected
+                            newQueenColor === color.id ? styles.colorOptionSelected : {}
                           ]}
                           onPress={() => setNewQueenColor(color.id)}
                         >
                           <Text style={[styles.colorText, { color: color.textColor }]}>
                             {color.name}
                           </Text>
-                        </Pressable>
+                        </AnimatedButton>
                       ))}
                     </View>
                   </View>
@@ -851,7 +852,7 @@ export default function AddInspectionScreen() {
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Ny drottning vingklippt</Text>
                   <View style={styles.queenSelector}>
-                    <Pressable
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
                         newQueenWingClipped === true && styles.queenOptionSelected
@@ -865,8 +866,8 @@ export default function AddInspectionScreen() {
                       ]}>
                         Ja
                       </Text>
-                    </Pressable>
-                    <Pressable
+                    </AnimatedButton>
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
                         newQueenWingClipped === false && styles.queenOptionSelected
@@ -879,7 +880,7 @@ export default function AddInspectionScreen() {
                       ]}>
                         Nej
                       </Text>
-                    </Pressable>
+                    </AnimatedButton>
                   </View>
                 </View>
               </>
@@ -899,10 +900,10 @@ export default function AddInspectionScreen() {
               />
             </View>
 
-            <Pressable style={styles.saveButton} onPress={handleSave}>
+            <AnimatedButton style={styles.saveButton} onPress={handleSave}>
               <Save size={24} color="white" />
               <Text style={styles.saveButtonText}>Spara inspektion</Text>
-            </Pressable>
+            </AnimatedButton>
           </View>
         </ScrollView>
       </LinearGradient>

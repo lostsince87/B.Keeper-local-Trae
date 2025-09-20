@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Alert, TextInput, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Alert, TextInput, Modal } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Plus, Share2, Copy, Trash2, Calendar, Users } from 'lucide-react-native';
 import { useState, useEffect } from 'react';
 import { router } from 'expo-router';
 import { createInvitationCode, getInvitationCodes, deactivateInvitationCode, InvitationCode } from '../lib/invitation-service';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function ManageInvitationsScreen() {
   const [invitationCodes, setInvitationCodes] = useState<InvitationCode[]>([]);
@@ -120,19 +121,19 @@ export default function ManageInvitationsScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <Pressable 
+          <AnimatedButton 
             style={styles.backButton}
             onPress={() => router.back()}
           >
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Hantera inbjudningar</Text>
-          <Pressable 
+          <AnimatedButton 
             style={styles.addButton}
             onPress={() => setShowCreateModal(true)}
           >
             <Plus size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -186,18 +187,18 @@ export default function ManageInvitationsScreen() {
                       </View>
                     </View>
                     <View style={styles.codeActions}>
-                      <Pressable 
+                      <AnimatedButton 
                         style={styles.actionButton}
                         onPress={() => handleCopyCode(code.code)}
                       >
                         <Copy size={20} color="#F7B801" />
-                      </Pressable>
-                      <Pressable 
+                      </AnimatedButton>
+                      <AnimatedButton 
                         style={styles.actionButton}
                         onPress={() => handleDeactivateCode(code.id, code.code)}
                       >
                         <Trash2 size={20} color="#FF6B6B" />
-                      </Pressable>
+                      </AnimatedButton>
                     </View>
                   </View>
                   
@@ -249,13 +250,13 @@ export default function ManageInvitationsScreen() {
               </View>
 
               <View style={styles.modalActions}>
-                <Pressable 
+                <AnimatedButton 
                   style={[styles.modalButton, styles.cancelButton]}
                   onPress={() => setShowCreateModal(false)}
                 >
                   <Text style={styles.cancelButtonText}>Avbryt</Text>
-                </Pressable>
-                <Pressable 
+                </AnimatedButton>
+                <AnimatedButton 
                   style={[styles.modalButton, styles.createButton]}
                   onPress={handleCreateCode}
                   disabled={isCreating}
@@ -263,7 +264,7 @@ export default function ManageInvitationsScreen() {
                   <Text style={styles.createButtonText}>
                     {isCreating ? 'Skapar...' : 'Skapa'}
                   </Text>
-                </Pressable>
+                </AnimatedButton>
               </View>
             </View>
           </View>

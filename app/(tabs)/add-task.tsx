@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Modal, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Modal, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Calendar, Clock, Save, CircleAlert as AlertTriangle, ChevronDown, X } from 'lucide-react-native';
 import { useState, useRef } from 'react';
 import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function AddTaskScreen() {
   const [taskTitle, setTaskTitle] = useState('');
@@ -164,13 +165,13 @@ export default function AddTaskScreen() {
         }}>
           <View style={styles.pickerContainer}>
             <View style={styles.pickerHeader}>
-              <Pressable onPress={onClose}>
+              <AnimatedButton onPress={onClose}>
                 <X size={24} color="#8B4513" />
-              </Pressable>
+              </AnimatedButton>
               <Text style={styles.pickerTitle}>{title}</Text>
-              <Pressable onPress={handleDone}>
+              <AnimatedButton onPress={handleDone}>
                 <Text style={styles.doneButton}>Klar</Text>
-              </Pressable>
+              </AnimatedButton>
             </View>
             
             <View style={styles.wheelContainer}>
@@ -192,11 +193,11 @@ export default function AddTaskScreen() {
               >
                 <View style={{ height: itemHeight * 2 }} />
                 {options.map((option, index) => (
-                  <Pressable
+                  <AnimatedButton
                     key={option.value}
                     style={[
                       styles.wheelItem,
-                      currentValue === option.value && { backgroundColor: '#8FBC8F20', borderColor: '#8FBC8F' }
+                      currentValue === option.value ? { backgroundColor: '#8FBC8F20', borderColor: '#8FBC8F' } : {}
                     ]}
                     onPress={() => {
                       setCurrentValue(option.value);
@@ -208,11 +209,11 @@ export default function AddTaskScreen() {
                   >
                     <Text style={[
                       styles.wheelItemText,
-                      currentValue === option.value && styles.wheelItemTextSelected
+                      currentValue === option.value ? styles.wheelItemTextSelected : {}
                     ]}>
                       {option.label}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
                 <View style={{ height: itemHeight * 2 }} />
               </ScrollView>
@@ -231,9 +232,9 @@ export default function AddTaskScreen() {
           style={styles.gradient}
         >
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Ny uppgift</Text>
           <View style={styles.placeholder} />
         </View>
@@ -244,21 +245,21 @@ export default function AddTaskScreen() {
               <Text style={styles.label}>Snabbval</Text>
               <View style={styles.quickTasksContainer}>
                 {quickTasks.map((task) => (
-                  <Pressable
+                  <AnimatedButton
                     key={task}
                     style={[
                       styles.quickTaskButton,
-                      taskTitle === task && styles.quickTaskButtonSelected
+                      taskTitle === task ? styles.quickTaskButtonSelected : {}
                     ]}
                     onPress={() => setTaskTitle(task)}
                   >
                     <Text style={[
                       styles.quickTaskText,
-                      taskTitle === task && styles.quickTaskTextSelected
+                      taskTitle === task ? styles.quickTaskTextSelected : {}
                     ]}>
                       {task}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
               </View>
             </View>
@@ -280,7 +281,7 @@ export default function AddTaskScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Datum & Tid *</Text>
               <View style={styles.dateTimeRow}>
-                <Pressable 
+                <AnimatedButton 
                   style={[styles.inputContainer, styles.dateTimeInput]}
                   onPress={() => setShowDatePicker(true)}
                 >
@@ -289,9 +290,9 @@ export default function AddTaskScreen() {
                     {taskDate ? dateOptions.find(d => d.value === taskDate)?.label || taskDate : 'Välj datum'}
                   </Text>
                   <ChevronDown size={20} color="#8B7355" />
-                </Pressable>
+                </AnimatedButton>
 
-                <Pressable 
+                <AnimatedButton 
                   style={[styles.inputContainer, styles.dateTimeInput]}
                   onPress={() => setShowTimePicker(true)}
                 >
@@ -300,7 +301,7 @@ export default function AddTaskScreen() {
                     {taskTime || 'Välj tid'}
                   </Text>
                   <ChevronDown size={20} color="#8B7355" />
-                </Pressable>
+                </AnimatedButton>
               </View>
             </View>
 
@@ -308,7 +309,7 @@ export default function AddTaskScreen() {
               <Text style={styles.label}>Prioritet *</Text>
               <View style={styles.prioritySelector}>
                 {priorities.map((priority) => (
-                  <Pressable
+                  <AnimatedButton
                     key={priority.id}
                     style={[
                       styles.priorityOption,
@@ -326,7 +327,7 @@ export default function AddTaskScreen() {
                     ]}>
                       {priority.label}
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 ))}
               </View>
             </View>
@@ -345,10 +346,10 @@ export default function AddTaskScreen() {
               />
             </View>
 
-            <Pressable style={styles.saveButton} onPress={handleSave}>
+            <AnimatedButton style={styles.saveButton} onPress={handleSave}>
               <Save size={24} color="white" />
               <Text style={styles.saveButtonText}>Spara uppgift</Text>
-            </Pressable>
+            </AnimatedButton>
           </View>
         </ScrollView>
       </LinearGradient>

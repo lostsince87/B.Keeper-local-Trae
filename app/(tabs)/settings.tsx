@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, Switch } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, Switch } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { User, Bell, Shield, Database, CircleHelp as HelpCircle, Info, ChevronRight, Moon, Globe, HeartHandshake, Share2 } from 'lucide-react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function SettingsScreen() {
   const [notifications, setNotifications] = useState(true);
@@ -104,7 +105,7 @@ export default function SettingsScreen() {
 
   const renderSettingItem = (item: any, sectionIndex: number, itemIndex: number) => {
     return (
-      <Pressable 
+      <AnimatedButton 
         key={`${sectionIndex}-${itemIndex}`} 
         style={styles.settingItem}
         disabled={item.action === 'toggle'}
@@ -129,7 +130,7 @@ export default function SettingsScreen() {
             <ChevronRight size={20} color="#8B7355" />
           )}
         </View>
-      </Pressable>
+      </AnimatedButton>
     );
   };
 

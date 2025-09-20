@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, MapPin, Calendar, Crown, Scissors, Activity, Droplets, Bug, FileText, CreditCard as Edit, Plus } from 'lucide-react-native';
@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { router, useLocalSearchParams } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Hive, Inspection } from '../../types';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function HiveDetailsScreen() {
   const { hiveId } = useLocalSearchParams();
@@ -103,16 +104,16 @@ export default function HiveDetailsScreen() {
     <SafeAreaView style={styles.container}>
       <LinearGradient colors={['#FFF8E1', '#FFF8E1']} style={styles.gradient}>
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={handleBack}>
+          <AnimatedButton style={styles.backButton} onPress={handleBack}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>{hive.name}</Text>
-          <Pressable 
+          <AnimatedButton 
             style={styles.addInspectionButton}
             onPress={() => router.push('/add-inspection')}
           >
             <Plus size={20} color="white" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -203,16 +204,16 @@ export default function HiveDetailsScreen() {
               <View style={styles.noInspections}>
                 <FileText size={32} color="#8B7355" />
                 <Text style={styles.noInspectionsText}>Inga inspektioner registrerade</Text>
-                <Pressable 
+                <AnimatedButton 
                   style={styles.addFirstInspectionButton}
                   onPress={() => router.push('/add-inspection')}
                 >
                   <Text style={styles.addFirstInspectionText}>Lägg till första inspektion</Text>
-                </Pressable>
+                </AnimatedButton>
               </View>
             ) : (
               inspections.map((inspection) => (
-                <Pressable 
+                <AnimatedButton 
                   key={inspection.id} 
                   style={styles.inspectionCard}
                   onPress={() => handleInspectionPress(inspection)}
@@ -267,7 +268,7 @@ export default function HiveDetailsScreen() {
                     </View>
                     <Edit size={16} color="#8B7355" />
                   </View>
-                </Pressable>
+                </AnimatedButton>
               ))
             )}
           </View>

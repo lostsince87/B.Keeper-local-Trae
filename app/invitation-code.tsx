@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, ScrollView, TextInput, Pressable, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, Key, Check } from 'lucide-react-native';
 import { useState } from 'react';
 import { router } from 'expo-router';
 import { useInvitationCode } from '../lib/invitation-service';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 export default function InvitationCodeScreen() {
   const [invitationCode, setInvitationCode] = useState('');
@@ -55,12 +56,12 @@ export default function InvitationCodeScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <Pressable 
+          <AnimatedButton 
             style={styles.backButton}
             onPress={() => router.back()}
           >
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Gå med i bigård</Text>
         </View>
 
@@ -91,9 +92,9 @@ export default function InvitationCodeScreen() {
                   maxLength={8}
                 />
               </View>
-              <Pressable style={styles.pasteButton} onPress={handlePasteCode}>
+              <AnimatedButton style={styles.pasteButton} onPress={handlePasteCode}>
                 <Text style={styles.pasteButtonText}>Klistra in från urklipp</Text>
-              </Pressable>
+              </AnimatedButton>
             </View>
           </View>
 
@@ -122,10 +123,10 @@ export default function InvitationCodeScreen() {
         </ScrollView>
 
         {/* Submit Button */}
-        <Pressable 
+        <AnimatedButton 
           style={[
             styles.submitButton, 
-            (isLoading || !invitationCode.trim()) && styles.submitButtonDisabled
+            (isLoading || !invitationCode.trim()) ? styles.submitButtonDisabled : {}
           ]}
           onPress={handleSubmitCode}
           disabled={isLoading || !invitationCode.trim()}
@@ -136,7 +137,7 @@ export default function InvitationCodeScreen() {
           ]}>
             {isLoading ? 'Ansluter...' : 'Gå med i bigård'}
           </Text>
-        </Pressable>
+        </AnimatedButton>
       </LinearGradient>
     </SafeAreaView>
   );

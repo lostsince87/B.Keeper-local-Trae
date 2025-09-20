@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable, TextInput, Alert } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TextInput, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { ArrowLeft, MapPin, Briefcase, Save, Crown, Scissors, Camera } from 'lucide-react-native';
@@ -7,6 +7,7 @@ import { router } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import { Hive, QueenColor } from '../../types';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 // ============================================
 // HUVUDKOMPONENT (Main Component)
@@ -203,9 +204,9 @@ export default function AddHiveScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <Pressable style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
             <ArrowLeft size={24} color="#8B4513" />
-          </Pressable>
+          </AnimatedButton>
           <Text style={styles.title}>Lägg till bikupa</Text>
         </View>
 
@@ -258,16 +259,16 @@ export default function AddHiveScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Bild av kupan</Text>
               {!selectedImage ? (
-                <Pressable style={styles.imageUploadButton} onPress={handleImagePicker}>
+                <AnimatedButton style={styles.imageUploadButton} onPress={handleImagePicker}>
                   <Camera size={24} color="#8B7355" />
                   <Text style={styles.imageUploadText}>Lägg till bild</Text>
-                </Pressable>
+                </AnimatedButton>
               ) : (
                 <View style={styles.imagePreview}>
                   <Text style={styles.imagePreviewText}>Bild vald</Text>
-                  <Pressable style={styles.changeImageButton} onPress={handleImagePicker}>
+                  <AnimatedButton style={styles.changeImageButton} onPress={handleImagePicker}>
                     <Text style={styles.changeImageText}>Ändra</Text>
-                  </Pressable>
+                  </AnimatedButton>
                 </View>
               )}
             </View>
@@ -277,34 +278,34 @@ export default function AddHiveScreen() {
               <View style={styles.inputGroup}>
                 <Text style={styles.label}>Är detta en avläggare?</Text>
                 <View style={styles.nucleusSelector}>
-                  <Pressable
+                  <AnimatedButton
                     style={[
                       styles.nucleusOption,
-                      isNucleus === true && styles.nucleusOptionSelected
+                      isNucleus === true ? styles.nucleusOptionSelected : {}
                     ]}
                     onPress={() => setIsNucleus(true)}
                   >
                     <Text style={[
                       styles.nucleusOptionText,
-                      isNucleus === true && styles.nucleusOptionTextSelected
+                      isNucleus === true ? styles.nucleusOptionTextSelected : {}
                     ]}>
                       Ja
                     </Text>
-                  </Pressable>
-                  <Pressable
+                  </AnimatedButton>
+                  <AnimatedButton
                     style={[
                       styles.nucleusOption,
-                      isNucleus === false && styles.nucleusOptionSelected
+                      isNucleus === false ? styles.nucleusOptionSelected : {}
                     ]}
                     onPress={() => setIsNucleus(false)}
                   >
                     <Text style={[
                       styles.nucleusOptionText,
-                      isNucleus === false && styles.nucleusOptionTextSelected
+                      isNucleus === false ? styles.nucleusOptionTextSelected : {}
                     ]}>
                       Nej
                     </Text>
-                  </Pressable>
+                  </AnimatedButton>
                 </View>
               </View>
             )}
@@ -313,35 +314,35 @@ export default function AddHiveScreen() {
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Drottning finns *</Text>
               <View style={styles.queenSelector}>
-                <Pressable
+                <AnimatedButton
                   style={[
                     styles.queenOption,
-                    hasQueen === true && styles.queenOptionSelected
+                    hasQueen === true ? styles.queenOptionSelected : {}
                   ]}
                   onPress={() => setHasQueen(true)}
                 >
                   <Crown size={20} color={hasQueen === true ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.queenOptionText,
-                    hasQueen === true && styles.queenOptionTextSelected
+                    hasQueen === true ? styles.queenOptionTextSelected : {}
                   ]}>
                     Ja
                   </Text>
-                </Pressable>
-                <Pressable
+                </AnimatedButton>
+                <AnimatedButton
                   style={[
                     styles.queenOption,
-                    hasQueen === false && styles.queenOptionSelected
+                    hasQueen === false ? styles.queenOptionSelected : {}
                   ]}
                   onPress={() => setHasQueen(false)}
                 >
                   <Text style={[
                     styles.queenOptionText,
-                    hasQueen === false && styles.queenOptionTextSelected
+                    hasQueen === false ? styles.queenOptionTextSelected : {}
                   ]}>
                     Nej
                   </Text>
-                </Pressable>
+                </AnimatedButton>
               </View>
             </View>
 
@@ -350,34 +351,34 @@ export default function AddHiveScreen() {
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Drottning märkt *</Text>
                   <View style={styles.queenSelector}>
-                    <Pressable
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        queenMarked === true && styles.queenOptionSelected
+                        queenMarked === true ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setQueenMarked(true)}
                     >
                       <Text style={[
                         styles.queenOptionText,
-                        queenMarked === true && styles.queenOptionTextSelected
+                        queenMarked === true ? styles.queenOptionTextSelected : {}
                       ]}>
                         Ja
                       </Text>
-                    </Pressable>
-                    <Pressable
+                    </AnimatedButton>
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        queenMarked === false && styles.queenOptionSelected
+                        queenMarked === false ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setQueenMarked(false)}
                     >
                       <Text style={[
                         styles.queenOptionText,
-                        queenMarked === false && styles.queenOptionTextSelected
+                        queenMarked === false ? styles.queenOptionTextSelected : {}
                       ]}>
                         Nej
                       </Text>
-                    </Pressable>
+                    </AnimatedButton>
                   </View>
                 </View>
 
@@ -386,7 +387,7 @@ export default function AddHiveScreen() {
                     <Text style={styles.label}>Märkningsfärg *</Text>
                     <View style={styles.colorSelector}>
                       {queenColors.map((color) => (
-                        <Pressable
+                        <AnimatedButton
                           key={color.id}
                           style={[
                             styles.colorOption,
@@ -398,7 +399,7 @@ export default function AddHiveScreen() {
                           <Text style={[styles.colorText, { color: color.textColor }]}>
                             {color.name}
                           </Text>
-                        </Pressable>
+                        </AnimatedButton>
                       ))}
                     </View>
                   </View>
@@ -407,35 +408,35 @@ export default function AddHiveScreen() {
                 <View style={styles.inputGroup}>
                   <Text style={styles.label}>Drottning vingklippt *</Text>
                   <View style={styles.queenSelector}>
-                    <Pressable
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        queenWingClipped === true && styles.queenOptionSelected
+                        queenWingClipped === true ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setQueenWingClipped(true)}
                     >
                       <Scissors size={20} color={queenWingClipped === true ? 'white' : '#8B7355'} />
                       <Text style={[
                         styles.queenOptionText,
-                        queenWingClipped === true && styles.queenOptionTextSelected
+                        queenWingClipped === true ? styles.queenOptionTextSelected : {}
                       ]}>
                         Ja
                       </Text>
-                    </Pressable>
-                    <Pressable
+                    </AnimatedButton>
+                    <AnimatedButton
                       style={[
                         styles.queenOption,
-                        queenWingClipped === false && styles.queenOptionSelected
+                        queenWingClipped === false ? styles.queenOptionSelected : {}
                       ]}
                       onPress={() => setQueenWingClipped(false)}
                     >
                       <Text style={[
                         styles.queenOptionText,
-                        queenWingClipped === false && styles.queenOptionTextSelected
+                        queenWingClipped === false ? styles.queenOptionTextSelected : {}
                       ]}>
                         Nej
                       </Text>
-                    </Pressable>
+                    </AnimatedButton>
                   </View>
                 </View>
               </>
@@ -457,10 +458,10 @@ export default function AddHiveScreen() {
             </View>
 
             {/* SPARA-KNAPP */}
-            <Pressable style={styles.saveButton} onPress={handleSave}>
+            <AnimatedButton style={styles.saveButton} onPress={handleSave}>
               <Save size={24} color="white" />
               <Text style={styles.saveButtonText}>Spara kupa</Text>
-            </Pressable>
+            </AnimatedButton>
           </View>
         </ScrollView>
       </LinearGradient>

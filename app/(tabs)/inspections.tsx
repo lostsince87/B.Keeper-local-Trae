@@ -1,9 +1,10 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from 'react-native';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Plus, Calendar, Cloud, FileText, Star, MapPin, ChevronDown } from 'lucide-react-native';
 import { useState , useEffect } from 'react';
 import { router } from 'expo-router';
+import { AnimatedButton } from '@/components/AnimatedButton';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Inspection, Hive } from '../../types';
@@ -151,40 +152,40 @@ export default function InspectionsScreen() {
       >
         <View style={styles.header}>
           <Text style={styles.title}>Inspektioner</Text>
-          <Pressable style={styles.addButton} onPress={() => router.push('/add-inspection')}>
+          <AnimatedButton style={styles.addButton} onPress={() => router.push('/add-inspection')}>
             <Plus size={24} color="white" />
-          </Pressable>
+          </AnimatedButton>
         </View>
 
         <View style={styles.filtersContainer}>
           <View style={styles.filterRow}>
-            <Pressable 
-               style={[styles.filterButton, selectedLocation && styles.filterButtonActive]}
+            <AnimatedButton 
+               style={[styles.filterButton, selectedLocation ? styles.filterButtonActive : {}]}
                onPress={() => setShowLocationPicker(!showLocationPicker)}
              >
                <MapPin size={16} color={selectedLocation ? 'white' : '#8B7355'} />
-               <Text style={[styles.filterText, selectedLocation && styles.filterTextActive]}>
+               <Text style={[styles.filterText, selectedLocation ? styles.filterTextActive : {}]}>
                  {selectedLocation || 'Välj plats'}
                </Text>
                <ChevronDown size={16} color={selectedLocation ? 'white' : '#8B7355'} />
-             </Pressable>
+             </AnimatedButton>
              
              {selectedLocation && (
-               <Pressable 
-                 style={[styles.filterButton, selectedHive && styles.filterButtonActive]}
+               <AnimatedButton 
+                 style={[styles.filterButton, selectedHive ? styles.filterButtonActive : {}]}
                  onPress={() => setShowHivePicker(!showHivePicker)}
                >
-                 <Text style={[styles.filterText, selectedHive && styles.filterTextActive]}>
+                 <Text style={[styles.filterText, selectedHive ? styles.filterTextActive : {}]}>
                    {selectedHive || 'Välj kupa'}
                  </Text>
                  <ChevronDown size={16} color={selectedHive ? 'white' : '#8B7355'} />
-               </Pressable>
+               </AnimatedButton>
              )}
           </View>
           
           {showLocationPicker && (
              <View style={styles.pickerContainer}>
-               <Pressable 
+               <AnimatedButton 
                  style={styles.pickerOption}
                  onPress={() => {
                    setSelectedLocation('');
@@ -193,9 +194,9 @@ export default function InspectionsScreen() {
                  }}
                >
                  <Text style={styles.pickerOptionText}>Alla platser</Text>
-               </Pressable>
+               </AnimatedButton>
                {locations.map((location) => (
-                 <Pressable
+                 <AnimatedButton
                    key={location}
                    style={styles.pickerOption}
                    onPress={() => {
@@ -205,14 +206,14 @@ export default function InspectionsScreen() {
                    }}
                  >
                    <Text style={styles.pickerOptionText}>{location}</Text>
-                 </Pressable>
+                 </AnimatedButton>
                ))}
              </View>
            )}
            
            {showHivePicker && selectedLocation && (
              <View style={styles.pickerContainer}>
-               <Pressable 
+               <AnimatedButton 
                  style={styles.pickerOption}
                  onPress={() => {
                    setSelectedHive('');
@@ -220,9 +221,9 @@ export default function InspectionsScreen() {
                  }}
                >
                  <Text style={styles.pickerOptionText}>Alla kupor</Text>
-               </Pressable>
+               </AnimatedButton>
                {hivesInLocation.map((hive) => (
-                 <Pressable
+                 <AnimatedButton
                    key={hive.id}
                    style={styles.pickerOption}
                    onPress={() => {
@@ -231,7 +232,7 @@ export default function InspectionsScreen() {
                    }}
                  >
                    <Text style={styles.pickerOptionText}>{hive.name}</Text>
-                 </Pressable>
+                 </AnimatedButton>
                ))}
              </View>
            )}
@@ -250,7 +251,7 @@ export default function InspectionsScreen() {
             </View>
           ) : (
             filteredInspections.map((inspection) => (
-               <Pressable 
+               <AnimatedButton 
                  key={inspection.id} 
                  style={styles.inspectionCard}
                  onPress={() => handleInspectionPress(inspection)}
@@ -296,14 +297,14 @@ export default function InspectionsScreen() {
                   </View>
                   <Text style={styles.notes}>{inspection.notes}</Text>
                  </View>
-               </Pressable>
+               </AnimatedButton>
              ))
            )}
 
-           <Pressable style={styles.addInspectionCard} onPress={() => router.push('/add-inspection')}>
+           <AnimatedButton style={styles.addInspectionCard} onPress={() => router.push('/add-inspection')}>
              <Plus size={32} color="#8B7355" />
              <Text style={styles.addInspectionText}>Lägg till ny inspektion</Text>
-           </Pressable>
+           </AnimatedButton>
         </ScrollView>
       </LinearGradient>
     </SafeAreaView>
