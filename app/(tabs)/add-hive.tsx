@@ -204,7 +204,7 @@ export default function AddHiveScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.push('/hives')}>
             <ArrowLeft size={24} color="#8B4513" />
           </AnimatedButton>
           <Text style={styles.title}>Lägg till bikupa</Text>
@@ -321,9 +321,8 @@ export default function AddHiveScreen() {
                   ]}
                   onPress={() => setHasQueen(true)}
                 >
-                  <Crown size={20} color={hasQueen === true ? 'white' : '#8B7355'} />
                   <Text style={[
-                    styles.queenOptionText,
+                    styles.queenOptionTextCentered,
                     hasQueen === true ? styles.queenOptionTextSelected : {}
                   ]}>
                     Ja
@@ -337,7 +336,7 @@ export default function AddHiveScreen() {
                   onPress={() => setHasQueen(false)}
                 >
                   <Text style={[
-                    styles.queenOptionText,
+                    styles.queenOptionTextCentered,
                     hasQueen === false ? styles.queenOptionTextSelected : {}
                   ]}>
                     Nej
@@ -613,7 +612,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
     borderRadius: 12,
-    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: 16,
@@ -624,6 +622,8 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
+    minWidth: 80,
+    height: 52,
   },
   queenOptionSelected: {
     backgroundColor: '#F7B801',
@@ -637,6 +637,12 @@ const styles = StyleSheet.create({
   },
   queenOptionTextSelected: {
     color: 'white',
+  },
+  queenOptionTextCentered: {
+    fontSize: 16,
+    fontWeight: '600',
+    color: '#8B7355',
+    textAlign: 'center',
   },
   colorSelector: {
     flexDirection: 'row',

@@ -9,75 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 import { Inspection } from '../../types';
 
-// OpenAI integration for inspection analysis
-// Använd miljövariabel för säker hantering av API-nyckel
-const OPENAI_API_KEY = process.env.EXPO_PUBLIC_OPENAI_API_KEY;
 
-const analyzeInspectionWithAI = async (inspectionData: Inspection): Promise<any> => {
-  try {
-    const prompt = `
-Analysera denna biodlarinspektionsdata och ge konkreta iakttagelser och rekommendationer på svenska:
-
-Kupa: ${inspectionData.hive}
-Datum: ${inspectionData.date}
-Väder: ${inspectionData.weather}
-Yngelramar: ${inspectionData.broodFrames}/${inspectionData.totalFrames}
-Drottning sedd: ${inspectionData.queenSeen === true ? 'Ja' : inspectionData.queenSeen === false ? 'Nej' : 'Osäker'}
-Temperament: ${inspectionData.temperament || 'Ej angivet'}
-Varroa/dag: ${inspectionData.varroaPerDay || 'Ej mätt'}
-Invintring: ${inspectionData.isWintering ? 'Ja' : 'Nej'}
-Varroabehandling: ${inspectionData.isVarroaTreatment ? 'Ja' : 'Nej'}
-Anteckningar: ${inspectionData.notes || 'Inga'}
-
-Ge svar i följande JSON-format:
-{
-  "observations": ["observation1", "observation2", ...],
-  "recommendations": ["rekommendation1", "rekommendation2", ...],
-  "status": "excellent|good|warning|critical",
-  "priority_actions": ["åtgärd1", "åtgärd2", ...],
-  "next_inspection": "antal_dagar"
-}
-
-Fokusera på praktiska biodlarråd baserat på säsong, väder och kupens tillstånd.
-`;
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-      },
-      body: JSON.stringify({
-        model: 'gpt-4',
-        messages: [
-          {
-            role: 'system',
-            content: 'Du är en erfaren biodlarexpert som ger praktiska råd baserat på inspektionsdata.'
-          },
-          {
-            role: 'user',
-            content: prompt
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 1000,
-      }),
-    });
-
-    if (!response.ok) {
-      throw new Error('OpenAI API error');
-    }
-
-    const data = await response.json();
-    const analysis = JSON.parse(data.choices[0].message.content);
-    
-    return analysis;
-  } catch (error) {
-    console.log('AI analysis failed:', error);
-    // Fallback to basic analysis
-    return generateBasicAnalysis(inspectionData);
-  }
-};
 
 const generateBasicAnalysis = (inspectionData: Inspection): any => {
   const observations = [];
@@ -344,25 +276,23 @@ export default function AddInspectionScreen() {
       newQueenColor: newQueenAdded && newQueenMarked ? newQueenColor : null,
       newQueenWingClipped: newQueenAdded ? newQueenWingClipped : null,
       createdAt: new Date().toISOString(),
-      rating: 3, // Will be updated by AI analysis
-      findings: [], // Will be populated by AI analysis
-      aiAnalysis: null, // Will be populated by AI
+      rating: 3, // Will be calculated based on inspection data
+      findings: [] // Will be populated by basic analysis
     };
 
-    console.log('Analyzing inspection with AI...');
+    console.log('Saving inspection...');
 
     // Save inspection to AsyncStorage
     const saveInspection = async () => {
       try {
-        // Get AI analysis
-        const aiAnalysis = await analyzeInspectionWithAI(newInspection);
+        // Get basic analysis
+        const basicAnalysis = generateBasicAnalysis(newInspection);
         
-        // Update inspection with AI analysis
-        newInspection.aiAnalysis = aiAnalysis;
-        newInspection.findings = aiAnalysis.observations || [];
-        newInspection.rating = aiAnalysis.status === 'excellent' ? 5 : 
-                              aiAnalysis.status === 'good' ? 4 : 
-                              aiAnalysis.status === 'warning' ? 3 : 2;
+        // Update inspection with basic analysis
+        newInspection.findings = basicAnalysis.observations || [];
+        newInspection.rating = basicAnalysis.status === 'excellent' ? 5 : 
+                              basicAnalysis.status === 'good' ? 4 : 
+                              basicAnalysis.status === 'warning' ? 3 : 2;
         
         const existingInspections = JSON.parse(await AsyncStorage.getItem('inspections') || '[]');
         console.log('Existing inspections:', existingInspections.length);
@@ -371,9 +301,9 @@ export default function AddInspectionScreen() {
         await AsyncStorage.setItem('inspections', JSON.stringify(updatedInspections));
         console.log('Inspection saved successfully');
 
-        // Calculate hive status and population based on AI analysis
+        // Calculate hive status and population based on basic analysis
         const calculateHiveStatus = (): string => {
-          return aiAnalysis.status || 'good';
+          return basicAnalysis.status || 'good';
         };
 
         const calculatePopulation = (broodFrames: number): string => {
@@ -427,15 +357,10 @@ export default function AddInspectionScreen() {
         
         console.log('All data saved successfully');
         
-        // Show AI recommendations in alert
-        const recommendationsText = aiAnalysis.recommendations ? 
-          aiAnalysis.recommendations.slice(0, 2).join('\n• ') : 
-          'Inga specifika rekommendationer';
-          
         Alert.alert(
-          'Inspektion analyserad!', 
-          `AI-analys för ${selectedHive}:\n\n• ${recommendationsText}${aiAnalysis.priority_actions?.length > 0 ? '\n\nPrioriterade åtgärder:\n• ' + aiAnalysis.priority_actions[0] : ''}`,
-          [{ text: 'OK', onPress: () => router.back() }]
+          'Inspektion sparad!', 
+          `Inspektionen för ${selectedHive} har sparats framgångsrikt.`,
+          [{ text: 'OK', onPress: () => router.push('/inspections') }]
         );
       } catch (error) {
         console.error('Could not save inspection:', error);
@@ -461,7 +386,7 @@ export default function AddInspectionScreen() {
           style={styles.gradient}
         >
         <View style={styles.header}>
-          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.push('/inspections')}>
             <ArrowLeft size={24} color="#8B4513" />
           </AnimatedButton>
           <Text style={styles.title}>Ny inspektion</Text>
@@ -583,9 +508,9 @@ export default function AddInspectionScreen() {
                   ]}
                   onPress={() => setQueenSeen(true)}
                 >
-                  <Crown size={20} color={queenSeen === true ? 'white' : '#8B7355'} />
                   <Text style={[
                     styles.queenOptionText,
+                    styles.queenOptionTextCentered,
                     queenSeen === true ? styles.queenOptionTextSelected : {}
                   ]}>
                     Ja
@@ -600,6 +525,7 @@ export default function AddInspectionScreen() {
                 >
                   <Text style={[
                     styles.queenOptionText,
+                    styles.queenOptionTextCentered,
                     queenSeen === false ? styles.queenOptionTextSelected : {}
                   ]}>
                     Nej
@@ -614,6 +540,7 @@ export default function AddInspectionScreen() {
                 >
                   <Text style={[
                     styles.queenOptionText,
+                    styles.queenOptionTextCentered,
                     queenSeen === null ? styles.queenOptionTextSelected : {}
                   ]}>
                     Osäker
@@ -1050,6 +977,8 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderWidth: 2,
     borderColor: '#E8D5B7',
+    minWidth: 80,
+    height: 52,
   },
   queenOptionSelected: {
     backgroundColor: '#F7B801',
@@ -1060,6 +989,10 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#8B7355',
     marginLeft: 8,
+  },
+  queenOptionTextCentered: {
+    marginLeft: 0,
+    textAlign: 'center',
   },
   queenOptionTextSelected: {
     color: 'white',

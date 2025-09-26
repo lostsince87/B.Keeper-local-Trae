@@ -276,13 +276,13 @@ export default function HomeScreen() {
 
             <View style={styles.statsGrid}>
               {availableStats.map((stat, index) => (
-                <AnimatedButton key={index} style={styles.statCard}>
+                <View key={index} style={styles.statCard}>
                   <View style={[styles.statIcon, { backgroundColor: stat.color + '20' }]}>
                     <stat.icon size={24} color={stat.color} />
                   </View>
                   <Text style={styles.statValue}>{stat.value}</Text>
                   <Text style={styles.statTitle}>{stat.title}</Text>
-                </AnimatedButton>
+                </View>
               ))}
             </View>
           </View>

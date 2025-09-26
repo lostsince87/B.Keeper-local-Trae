@@ -53,7 +53,6 @@ export interface Inspection {
   createdAt: string;
   rating?: number;
   findings: string[];
-  aiAnalysis?: any;
 }
 
 export interface Task {

@@ -2,8 +2,8 @@ import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Plus, Calendar, Cloud, FileText, Star, MapPin, ChevronDown } from 'lucide-react-native';
-import { useState , useEffect } from 'react';
-import { router } from 'expo-router';
+import React, { useState , useEffect } from 'react';
+import { router, useFocusEffect } from 'expo-router';
 import { AnimatedButton } from '@/components/AnimatedButton';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -102,6 +102,28 @@ export default function InspectionsScreen() {
     
     loadData();
   }, []);
+
+  // Ladda data varje gång användaren navigerar tillbaka till denna flik
+  useFocusEffect(
+    React.useCallback(() => {
+      const loadData = async () => {
+        try {
+          const savedInspections = JSON.parse(await AsyncStorage.getItem('inspections') || '[]');
+          const savedHives = JSON.parse(await AsyncStorage.getItem('hives') || '[]');
+        
+          const inspectionsArray = Array.isArray(savedInspections) ? savedInspections : [];
+          const hivesArray = Array.isArray(savedHives) ? savedHives : [];
+          
+          setInspections(inspectionsArray);
+          setHives(hivesArray);
+        } catch (error) {
+          console.log('Could not load inspections from AsyncStorage:', error);
+        }
+      };
+      
+      loadData();
+    }, [])
+  );
 
   // Get unique locations from hives
   const locations = [...new Set(hives.map(hive => hive.location))];

@@ -258,84 +258,29 @@ export default function StatisticsScreen() {
           <View style={styles.insightsContainer}>
             <Text style={styles.insightsTitle}>Insikter och rekommendationer</Text>
             
-            {(() => {
-              // Get AI insights from recent inspections
-              const recentInspections = inspections
-                .filter(i => i.aiAnalysis)
-                .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-                .slice(0, 5);
-              
-              if (recentInspections.length === 0) {
-                return (
-                  <View style={styles.insightCard}>
-                    <View style={[styles.insightIcon, { backgroundColor: '#8B7355' + '20' }]}>
-                      <TrendingUp size={20} color="#8B7355" />
-                    </View>
-                    <View style={styles.insightContent}>
-                      <Text style={styles.insightTitle}>AI-analys kommer snart</Text>
-                      <Text style={styles.insightText}>
-                        Gör fler inspektioner för att få AI-genererade insikter och rekommendationer.
-                      </Text>
-                    </View>
-                  </View>
-                );
-              }
-              
-              // Aggregate AI recommendations
-              const allRecommendations = recentInspections
-                .flatMap(i => i.aiAnalysis.recommendations || [])
-                .slice(0, 3);
-              
-              const criticalActions = recentInspections
-                .flatMap(i => i.aiAnalysis.priority_actions || [])
-                .slice(0, 2);
-              
-              return (
-                <>
-                  {criticalActions.length > 0 && (
-                    <View style={styles.insightCard}>
-                      <View style={[styles.insightIcon, { backgroundColor: '#E74C3C' + '20' }]}>
-                        <Bug size={20} color="#E74C3C" />
-                      </View>
-                      <View style={styles.insightContent}>
-                        <Text style={styles.insightTitle}>Prioriterade åtgärder</Text>
-                        <Text style={styles.insightText}>
-                          {criticalActions.join('\n• ')}
-                        </Text>
-                      </View>
-                    </View>
-                  )}
-                  
-                  {allRecommendations.length > 0 && (
-                    <View style={styles.insightCard}>
-                      <View style={[styles.insightIcon, { backgroundColor: '#8FBC8F' + '20' }]}>
-                        <TrendingUp size={20} color="#8FBC8F" />
-                      </View>
-                      <View style={styles.insightContent}>
-                        <Text style={styles.insightTitle}>AI-rekommendationer</Text>
-                        <Text style={styles.insightText}>
-                          • {allRecommendations.slice(0, 2).join('\n• ')}
-                        </Text>
-                      </View>
-                    </View>
-                  )}
-                  
-                  <View style={styles.insightCard}>
-                    <View style={[styles.insightIcon, { backgroundColor: '#F7B801' + '20' }]}>
-                      <Calendar size={20} color="#F7B801" />
-                    </View>
-                    <View style={styles.insightContent}>
-                      <Text style={styles.insightTitle}>Inspektionsschema</Text>
-                      <Text style={styles.insightText}>
-                        Du har gjort {inspections.length} inspektioner. AI föreslår nästa inspektion inom {
-                          recentInspections[0]?.aiAnalysis?.next_inspection || '14'
-                        } dagar.
-                      </Text>
-                    </View>
-                  </View>
-                </>
-              );
-            })()}
+            <View style={styles.insightCard}>
+              <View style={[styles.insightIcon, { backgroundColor: '#F7B801' + '20' }]}>
+                <Calendar size={20} color="#F7B801" />
+              </View>
+              <View style={styles.insightContent}>
+                <Text style={styles.insightTitle}>Inspektionsöversikt</Text>
+                <Text style={styles.insightText}>
+                  Du har gjort {inspections.length} inspektioner totalt. Fortsätt med regelbundna inspektioner för att hålla koll på dina bikupors hälsa.
+                </Text>
+              </View>
+            </View>
+            
+            <View style={styles.insightCard}>
+              <View style={[styles.insightIcon, { backgroundColor: '#8FBC8F' + '20' }]}>
+                <TrendingUp size={20} color="#8FBC8F" />
+              </View>
+              <View style={styles.insightContent}>
+                <Text style={styles.insightTitle}>Allmänna tips</Text>
+                <Text style={styles.insightText}>
+                  Kontrollera regelbundet efter drottning, varroa-nivåer och allmän kupstatus. Dokumentera alla observationer för bästa resultat.
+                </Text>
+              </View>
+            </View>
           </View>
         </ScrollView>
       </LinearGradient>

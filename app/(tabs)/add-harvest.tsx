@@ -40,7 +40,7 @@ export default function AddHarvestScreen() {
     Alert.alert(
       'Skattning sparad!', 
       `Skattning för ${selectedHive}: ${honeyFrames} ramar ≈ ${estimatedHoney} kg honung`,
-      [{ text: 'OK', onPress: () => router.back() }]
+      [{ text: 'OK', onPress: () => router.push('/') }]
     );
   };
 
@@ -51,7 +51,7 @@ export default function AddHarvestScreen() {
         style={styles.gradient}
       >
         <View style={styles.header}>
-          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.push('/')}>
             <ArrowLeft size={24} color="#8B4513" />
           </AnimatedButton>
           <Text style={styles.title}>Registrera skattning</Text>

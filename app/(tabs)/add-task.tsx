@@ -232,7 +232,7 @@ export default function AddTaskScreen() {
           style={styles.gradient}
         >
         <View style={styles.header}>
-          <AnimatedButton style={styles.backButton} onPress={() => router.back()}>
+          <AnimatedButton style={styles.backButton} onPress={() => router.push('/')}>
             <ArrowLeft size={24} color="#8B4513" />
           </AnimatedButton>
           <Text style={styles.title}>Ny uppgift</Text>

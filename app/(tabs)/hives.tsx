@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Swipeable } from 'react-native-gesture-handler';
 import * as Clipboard from 'expo-clipboard';
@@ -224,6 +224,13 @@ export default function HivesScreen() {
   useEffect(() => {
     loadHives();
   }, []);
+
+  // Ladda data varje gång användaren navigerar tillbaka till denna flik
+  useFocusEffect(
+    React.useCallback(() => {
+      loadHives();
+    }, [])
+  );
 
   // ==================== DATA LOADING ====================
   const loadHives = async (): Promise<void> => {
